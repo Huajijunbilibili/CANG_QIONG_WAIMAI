@@ -9,5 +9,20 @@
             #{dishId}
         </foreach>
     </select>
-
+    <select id="getSetmealIdsByDishIds" resultType="java.lang.Long">
+        SELECT DISTINCT setmeal_id
+        FROM setmeal_dish
+        WHERE dish_id IN
+        <foreach collection="dishIds" item="dishId" open="(" separator="," close=")">
+            #{dishId}
+        </foreach>
+    </select>
+    <insert id="insertBatch" parameterType="list">
+        insert into setmeal_dish
+        (setmeal_id,dish_id,name,price,copies)
+        values
+        <foreach collection="setmealDishes" item="sd" separator=",">
+            (#{sd.setmealId},#{sd.dishId},#{sd.name},#{sd.price},#{sd.copies})
+        </foreach>
+    </insert>
 </mapper>
